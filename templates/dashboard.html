@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Retail Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #4B0082;
+            margin-bottom: 30px;
+        }
+        canvas {
+            margin: 20px auto;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .back-link {
+            margin-top: 30px;
+            display: inline-block;
+            color: #008CBA;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #e6e6fa;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Retail Dashboard 📊</h1>
+
+<!-- Household Size vs Average Spend -->
+<canvas id="householdChart" width="600" height="400"></canvas>
+
+<!-- Year vs Total Spend -->
+<canvas id="yearChart" width="600" height="400"></canvas>
+
+<!-- Organic vs Non-Organic Brand Preferences -->
+<canvas id="brandChart" width="600" height="400"></canvas>
+
+<!-- Back to Search Page -->
+<a href="/" class="back-link">🔙 Back to Search</a>
+
+<script>
+    // Use |tojson filter for safe JS parsing
+    const householdLabels = {{ demo_data|map(attribute=0)|list|tojson }};
+    const householdSpend = {{ demo_data|map(attribute=1)|list|tojson }};
+
+    const yearLabels = {{ year_data|map(attribute=0)|list|tojson }};
+    const yearSpend = {{ year_data|map(attribute=1)|list|tojson }};
+
+    const brandLabels = {{ brand_data|map(attribute=0)|list|tojson }};
+    const brandCounts = {{ brand_data|map(attribute=1)|list|tojson }};
+
+    const householdCtx = document.getElementById('householdChart').getContext('2d');
+    new Chart(householdCtx, {
+        type: 'bar',
+        data: {
+            labels: householdLabels,
+            datasets: [{
+                label: 'Avg Spend ($)',
+                data: householdSpend,
+                backgroundColor: 'rgba(75, 0, 130, 0.6)'
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Household Size vs Average Spend'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const yearCtx = document.getElementById('yearChart').getContext('2d');
+    new Chart(yearCtx, {
+        type: 'line',
+        data: {
+            labels: yearLabels,
+            datasets: [{
+                label: 'Total Spend ($)',
+                data: yearSpend,
+                fill: false,
+                borderColor: 'rgba(0, 123, 255, 0.8)',
+                tension: 0.3
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Total Spend Over Years'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const brandCtx = document.getElementById('brandChart').getContext('2d');
+    new Chart(brandCtx, {
+        type: 'pie',
+        data: {
+            labels: brandLabels,
+            datasets: [{
+                label: 'Products',
+                data: brandCounts,
+                backgroundColor: [
+                    'rgba(0, 200, 83, 0.6)', 
+                    'rgba(255, 99, 132, 0.6)'
+                ]
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Natural/Organic vs Non-Organic Products'
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

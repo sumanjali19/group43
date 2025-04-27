@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Datasets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 40px;
+            text-align: center;
+        }
+        h1 {
+            color: #4B0082;
+        }
+        form {
+            background: #E6E6FA;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        input[type="file"], button {
+            display: block;
+            margin: 10px auto;
+            padding: 8px;
+            width: 80%;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .columns-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .message {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
+        }
+        .error {
+            margin-top: 20px;
+            font-weight: bold;
+            color: red;
+        }
+        .back-link {
+            margin-top: 30px;
+            display: block;
+            color: #008CBA;
+            font-size: 16px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>📂 Upload Datasets</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    <p><strong>Transactions File:</strong><br>
+    <input type="file" name="transaction_file"></p>
+    <div class="columns-info">
+        Expected Columns: <br>
+        HSHD_NUM, BASKET_NUM, PURCHASE, PRODUCT_NUM, SPEND, UNITS, STORE_R, WEEK_NUM, YEAR
+    </div>
+
+    <p><strong>Households File:</strong><br>
+    <input type="file" name="household_file"></p>
+    <div class="columns-info">
+        Expected Columns: <br>
+        HSHD_NUM, LOYALTY_FLAG, AGE_RANGE, MARITAL_STATUS, INCOME_RANGE, HOMEOWNER_DESC, HSHD_COMPOSITION, HSHD_SIZE, CHILDREN
+    </div>
+
+    <p><strong>Products File:</strong><br>
+    <input type="file" name="product_file"></p>
+    <div class="columns-info">
+        Expected Columns: <br>
+        PRODUCT_NUM, DEPARTMENT, COMMODITY, BRAND_TY, NATURAL_ORGANIC_FLAG
+    </div>
+
+    <button type="submit">Upload Files</button>
+</form>
+
+{% if message %}
+    <div class="{{ 'message' if 'successfully' in message else 'error' }}">
+        {{ message }}
+    </div>
+{% endif %}
+
+<a href="/" class="back-link">🔙 Back to Search Page</a>
+
+</body>
+</html>

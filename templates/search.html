@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sample Data Pull - HSHD_NUM Search</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 40px; 
+            background-color: #f9f9f9; 
+        }
+        h1 { 
+            text-align: center; 
+            color: #4B0082; 
+        }
+        form { 
+            text-align: center; 
+            margin-bottom: 30px; 
+        }
+        select, input[type="submit"], .upload-button, .dashboard-button {
+            padding: 8px;
+            margin: 5px;
+        }
+        select {
+            width: 250px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 120px;
+        }
+        .upload-button, .dashboard-button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 150px;
+            padding: 10px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            font-size: 14px;
+        }
+        .dashboard-button {
+            background-color: #800080; /* Purple color */
+        }
+        table {
+            width: 95%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+        th {
+            background-color: #800080;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        td {
+            padding: 10px;
+            text-align: center;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #E6E6FA;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #F0F8FF;
+        }
+        td:nth-child(1) { background-color: #DDA0DD; }
+        td:nth-child(2) { background-color: #87CEFA; }
+        td:nth-child(3) { background-color: #F0FFF0; }
+        td:nth-child(4) { background-color: #FFE4E1; }
+        td:nth-child(5) { background-color: #FFFACD; }
+        td:nth-child(6) { background-color: #FFD700; }
+        .alert {
+            width: 50%;
+            margin: 20px auto;
+            padding: 15px;
+            text-align: center;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+ 
+<h1>Sample Data Pull for HSHD_NUM</h1>
+ 
+<form method="post">
+    <label for="hshd_num">Select HSHD_NUM:</label>
+    <select id="hshd_num" name="hshd_num" required>
+        <option value="">-- Select --</option>
+        {% for num in hshd_nums %}
+            <option value="{{ num }}" {% if selected_hshd == num|string %}selected{% endif %}>{{ num }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Search">
+</form>
+
+<div style="text-align:center;">
+    <!-- Upload Button -->
+    <a href="/upload" class="upload-button">Upload New Data</a>
+    <!-- 🚀 Dashboard Button -->
+    <a href="/dashboard" class="dashboard-button">View Dashboard</a>
+</div>
+
+{% if results %}
+    {% if results|length > 0 %}
+        <h2 style="text-align:center;">Search Results</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>HSHD_NUM</th>
+                    <th>BASKET_NUM</th>
+                    <th>DATE</th>
+                    <th>PRODUCT_NUM</th>
+                    <th>DEPARTMENT</th>
+                    <th>COMMODITY</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in results %}
+                <tr>
+                    {% for cell in row %}
+                        <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert">
+            No results found for the selected HSHD_NUM.
+        </div>
+    {% endif %}
+{% endif %}
+ 
+</body>
+</html>
